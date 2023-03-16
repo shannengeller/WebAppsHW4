@@ -2,7 +2,7 @@
 HW4 - Who is a vampire website 
 
 Quick Start:
- - clone the repo and run the introduction html
+ -
 
 Teammates:
 
