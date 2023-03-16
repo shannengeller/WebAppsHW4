@@ -50,9 +50,6 @@
 		  <li><a class="active" href="results.html">Results</a></li>
 		</ul>
 
-		<label for="inputFileToRead" style="margin-top: 100px; margin-left: 20%; margin-right: auto; background-color: 424949; padding: 15px; text-align: left; color: lightgray;">Select the csv file below</label>
-		<input type="file" id="inputFileToRead" style="margin-left: 20%; margin-right: 20%; background-color: 424949; padding: 15px; text-align: center;"/>
-
 		<form class="form-inline" id="form" style="margin-top: 20px; margin-left: 20%; margin-right: 20%; background-color: 424949; padding: 15px; text-align: center;">
 			<!-- This is the text box for the name -->
 			<input type="text" id="inputName" placeholder="Name" style="width: auto; height: 30px; font-size: 16px;">
@@ -90,16 +87,27 @@
 			function saveNewPerson(){
 				// var inputData = $("form").serializeArray();  Just a possible way i was using to get the form data, not important rn
 
-				var csvFile = document.getElementById("inputFileToRead");
-				let inFile = csvFile.files[0]
-				let reader = new FileReader();
-				var text = reader.result; // This is where the file should be read to but rn it only returns null
-				console.log(text)
-
+				// This whole block is a kinda odd way to get the access to the csv file containing the people
+				const fileInput = document.createElement('input');
+				fileInput.type = 'file';
+				fileInput.style.display = 'none';
+				fileInput.onchange = () => {
+					const file = fileInput.files[0];
+					const reader = new FileReader();
+					reader.onload = () => {
+						console.log(reader.result);
+					};
+				reader.readAsText(file);
+				};
+				document.body.appendChild(fileInput);
+				const fakeClick = () => {
+  					fileInput.click();
+				};
+				fakeClick();
 
 				// I need to put the stuff that takes the input from the form above and saves it to the csv file
 
-	            resetForm();
+	            		resetForm();
 			}
 		</script>
 
