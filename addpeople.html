@@ -79,6 +79,8 @@
 			<button type="button" class="btn btn-primary" style="height: 30px; font-size: 16px;" onclick="saveNewPerson()">Submit</button>
 		</form>
 
+		<table id="table" style="margin-top: 20px; margin-left: auto; margin-right: auto; background-color: 424949; padding: 15px; text-align: center; width: 60%; color: lightgray; border: 1px solid; border-color: lightgray; border-collapse: collapse;"></table>
+
 
 		<script>
 			function resetForm(){
@@ -95,7 +97,8 @@
 						var before = reader.result;
 						var addition = getFormData();
 						var newText = before + addition;
-						saveData(newText)
+						drawTable(newText);
+						saveData(newText);
 						//console.log(newText);
 					};
 				reader.readAsText(file);
@@ -116,22 +119,6 @@
 			function saveData(arg){
 				dataString = arg.toString();
 
-				// Unused code to be removed if uneeded at the end
-				// This code was used to seperate the data string into an array with each row of data being and array
-				//console.log(dataString);
-				//var temp = dataString.replaceAll("\r\n", ",");
-				//console.log(temp);
-				//dataList = temp.split(",");
-				//console.log(dataList);
-
-				//var loops = (dataList.length-1) / 5;
-				//var finalList = [];
-				//for (let i = 0; i < loops; i++){
-				//	var pos = (i+1) * 5;
-				//	finalList.push(dataList.slice(pos-5, pos));
-				//}
-				//console.log(finalList);
-
 				const blob = new Blob([dataString], {type: 'text/csv;charset=utf-8,' })
 				const objUrl = URL.createObjectURL(blob)
 				const link = document.createElement('a')
@@ -140,6 +127,30 @@
 				document.body.appendChild(link);
 				link.click();
 
+			}
+			function drawTable(arg){
+				dataString = arg.toString();
+
+				// This code is used to seperate the data string into an array with each row of data being and array
+				var temp = dataString.replaceAll("\r\n", ",");
+				dataList = temp.split(",");
+
+				var loops = (dataList.length-1) / 5;
+				var finalList = [];
+				for (let i = 0; i < loops; i++){
+					var pos = (i+1) * 5;
+					finalList.push(dataList.slice(pos-5, pos));
+				}
+				console.log(finalList);
+				var content = "";
+				finalList.forEach(function(row) {
+        			content += "<tr>";
+       				row.forEach(function(cell) {
+            			content += "<td>" + cell + "</td>" ;
+        			});
+        			content += "</tr>";
+    			});
+    			document.getElementById("table").innerHTML = content;
 			}
 		</script>
 
