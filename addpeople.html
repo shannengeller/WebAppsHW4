@@ -85,9 +85,6 @@
 				document.getElementById('form').reset();
 			}
 			function saveNewPerson(){
-				// var inputData = $("form").serializeArray();  Just a possible way i was using to get the form data, not important rn
-
-				// This whole block is a kinda odd way to get the access to the csv file containing the people
 				const fileInput = document.createElement('input');
 				fileInput.type = 'file';
 				fileInput.style.display = 'none';
@@ -95,7 +92,11 @@
 					const file = fileInput.files[0];
 					const reader = new FileReader();
 					reader.onload = () => {
-						console.log(reader.result);
+						var before = reader.result;
+						var addition = getFormData();
+						var newText = before + addition;
+						saveData(newText)
+						//console.log(newText);
 					};
 				reader.readAsText(file);
 				};
@@ -104,10 +105,41 @@
   					fileInput.click();
 				};
 				fakeClick();
+			}
+			function getFormData(){
+				var text = document.getElementById('inputName').value + "," + document.getElementById('shadowSelect').value 
+				+ "," + document.getElementById('comlexSelect').value + "," + document.getElementById('garlicSelect').value + ",\r\n";
 
-				// I need to put the stuff that takes the input from the form above and saves it to the csv file
+	            resetForm();
+	            return text;
+			}
+			function saveData(arg){
+				dataString = arg.toString();
 
-	            		resetForm();
+				// Unused code to be removed if uneeded at the end
+				// This code was used to seperate the data string into an array with each row of data being and array
+				//console.log(dataString);
+				//var temp = dataString.replaceAll("\r\n", ",");
+				//console.log(temp);
+				//dataList = temp.split(",");
+				//console.log(dataList);
+
+				//var loops = (dataList.length-1) / 5;
+				//var finalList = [];
+				//for (let i = 0; i < loops; i++){
+				//	var pos = (i+1) * 5;
+				//	finalList.push(dataList.slice(pos-5, pos));
+				//}
+				//console.log(finalList);
+
+				const blob = new Blob([dataString], {type: 'text/csv;charset=utf-8,' })
+				const objUrl = URL.createObjectURL(blob)
+				const link = document.createElement('a')
+				link.setAttribute('href', objUrl)
+				link.setAttribute('download', 'peopleList.csv')
+				document.body.appendChild(link);
+				link.click();
+
 			}
 		</script>
 
