@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript"></script>
+  <script src="script.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet">
+
+  <title>Vampire</title>
+  <style>
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+      }
+
+      li {
+        float: left;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      a:hover {
+        background-color: darkgray;
+        color: white;
+        border-style: solid;
+        border-color: lightgray;
+        border-width: 5px;
+        margin: -5px;
+      }
+    </style>
+</head>
+
+<body>
+  <ul>
+      <!-- active indicates the active page or link, the page or link you are in -->
+      <li><a href="introduction.html">Introduction</a></li>
+      <!-- different from example 09 -->
+      <li><a class="active" href="addpeople.html">Add People</a></li>
+      <li><a class="active" href="home.html">Results</a></li>
+    </ul>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+
+
+    <div class="col-md-6 col-sm-1 col-lg-12 text-center py-5 heading">
+      <h1 class="h1">Is Your Classmate a Vampire?</h1>
+    </div>
+
+  <div class="container-xl mx-auto">
+    <div class="row g-2 py-5">
+
+      
+
+    <div class="col-sm-6 mx-auto">
+        <h2 class="h2">Select Model</h2>
+        <div class="form-group">
+          <label for="modelType">Select Model Logic:</label>
+          <select class="form-control form-select-lg w-50" id="modelType">
+            <option value='RandomGuess'>Random Guess</option>
+            <option value='ThresholdBasedMethod'>Threshold Based Method</option>
+          </select>
+          <button class="btn btn-primary" type="button" onclick="showDiv(this)">Enter</button> 
+        </div>
+      </div>
+
+
+      <div class="col-sm-6 mx-auto">
+
+        <h2>Models</h2>
+        <h3>Threshold based</h3>
+
+        <ul class="list-unstyled" style="color: lightgray;">
+          <li>No shadow +4, otherwise 0 </li>
+          <li>Complexion pale +3, otherwise 0</li>
+          <li>No Garlic +3, otherwise 0</li>
+          <li> Total score > 6, yes; <=6 no</li>
+        </ul>
+
+        <h3>Random guess</h3>
+        <ul class="list-unstyled">
+          <li style="color: lightgray;">Picks student by random </li>
+        </ul>
+    </div>
+
+
+    </div>
+  </div>
+</div>
+
+  <div class="container-xl mx-auto">
+    <div class="row g-2 py-1">
+      <div class="col-sm-6 mx-auto">
+      <div class="container-xl py-1" id="student_form">
+        <h1>Threshold based Model</h1>
+        <h2>Enter Student Information</h2>
+        <form>
+          <div class="form-row py-2">
+            <div class="form-group col-md-4">
+              <label for="first_name">First Name</label>
+              <!-- possible types:  text, password, datetime, datetime-local, date, month, time, week, number, email, url, search, tel, and color. -->
+              <input type="text" class="form-control w-75" id="first_name" placeholder="First Name">
+            </div>
+          </div>
+
+          <!-- shadow -->
+          <div class="form-row py-2">
+            <div class="form-group col-md-12">
+              <!-- same name so you can only select one option -->
+              <label>Shadow</label>
+              <div class="radio">
+                <label>         
+                  <input type="radio" name="optradio" id="yes_shadow" checked> Yes
+                </label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio" id="no_shadow"> No</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- garlic -->
+          <div class="form-row py-2">
+            <div class="form-group col-md-12">
+              <!-- same name so you can only select one option -->
+              <label>Garlic</label>
+              <div class="radio">
+                <label><input type="radio" name="optradio2" id="yes_garlic" checked> Yes</label>
+              </div>
+              <div class="radio">
+                <label><input type="radio" name="optradio2" id="no_garlic"> No</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group py-2">
+            <label for="mySelect">Complextion</label>
+            <select class="form-control w-25" id="mySelect">
+              <option value='brown'>brown</option>
+              <option value='pale'>pale</option>
+              <option value='olive'>olive</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary btn-lg pt-5" type="button" onclick="display_student_added()">Add New Student</button>
+
+        </form>
+      </div>
+
+      <div class="container-xl py-1 mx-auto" id="pick_model" style="display:block;">
+        <h1>Please pick a model</h1>
+      </div>
+
+
+      <div class="container-xl py-1 mx-auto" id="hidden_div" style="display:hidden;">
+        <h1>Random Guess Model</h1>
+
+        <button type="button" class="btn btn-primary btn-lg btn-block py-5" onclick="random_guess()">Random
+            Guess</button>
+
+        <h2 class="py-3" id="vampireName"></h2>
+            
+      </div>
+
+    </div>
+    <div class="col-sm-6 mx-auto">
+      <div class="container-xl mx-auto text-center">
+        <h1> Pie Chart of Vampire </h1>
+        <div class="mx-auto" id="chart_div"></div>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+
+    <!--Make table to display info-->
+    <div class="container py-5 text-center">
+      <h1>Student Roster</h1>
+      <div class="table-responsive">
+      <table class="table table-striped table-bordered table-hover table-light border-dark py-5" id="classmate_data">
+        <thead class="thead-dark">
+          <tr>
+            <th>Name</th>
+            <th>Garlic</th>
+            <th>Shadow</th>
+            <th>Complexion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>John</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Pale</td>
+          </tr>
+          <tr>
+            <td>Lee</td>
+            <td>Yes</td>
+            <td>No</td>
+            <td>Pale</td>
+          </tr>
+          <tr>
+            <td>Emma</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Brown</td>
+          </tr>
+          <tr>
+            <td>Ava</td>
+            <td>Yes</td>
+            <td>Yes</td>
+            <td>Olive</td>
+          </tr>
+          <tr>
+            <td>Alex</td>
+            <td>No</td>
+            <td>No</td>
+            <td>Brown</td>
+          </tr>
+        </tbody>
+      </div>
+    </div>
+
+
+</body>
+
+</html>

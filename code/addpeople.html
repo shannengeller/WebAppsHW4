@@ -1,0 +1,171 @@
+<!-- This is a website for HW4 of CSCI 4710 -->
+<!-- This is the add people page-->
+<html>
+	<head>
+		<meta charset="utf-8">
+  		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<title>Vampire Detector</title>
+		<style>
+			ul {
+			  list-style-type: none;
+			  margin: 0;
+			  padding: 0;
+			  overflow: hidden;
+			  background-color: #333;
+			}
+
+			li {
+			  float: left;
+			}
+
+			li a {
+			  display: block;
+			  color: white;
+			  text-align: center;
+			  padding: 14px 16px;
+			  text-decoration: none;
+			}
+
+			a:hover {
+				background-color: darkgray;
+				color: white;
+				border-style: solid;
+				border-color: lightgray;
+				border-width: 5px;
+				margin: -5px;
+			}
+		</style>
+	</head>
+
+	<body style="background-color: 2b2b2b;">	
+
+		<ul>
+			<!-- active indicates the active page or link, the page or link you are in -->
+		  <li><a href="introduction.html">Introduction</a></li>
+		  <!-- different from example 09 -->
+		  <li><a class="active" href="addpeople.html">Add People</a></li>
+		  <li><a class="active" href="home.html">Results</a></li>
+		</ul>
+
+		<form class="form-inline" id="form" style="margin-top: 5%; margin-left: 20%; margin-right: 20%; background-color: 424949; padding: 15px; text-align: center;">
+			<!-- This is the text box for the name -->
+			<input type="text" id="inputName" placeholder="Name" style="width: auto; height: 30px; font-size: 16px;">
+
+			<!-- This is the drop down selection box for shadow -->
+			<label for="shadowSelect" style="color: lightgray; height: 30px; font-size: 16px;">&nbsp;Shadow:</label>
+			<select id="shadowSelect" class="form-control" style="height: 30px; font-size: 16px; width: auto;">
+			<option>Yes</option>
+			<option>No</option>
+			</select>
+
+			<!-- This is the drop down selection box for complexion -->
+			<label for="comlexSelect" style="color: lightgray; height: 30px; font-size: 16px;">&nbsp;Complextion:</label>
+			<select id="comlexSelect" class="form-control" style="height: 30px; font-size: 16px; width: auto">
+			<option>Normal</option>
+			<option>Pale</option>
+			</select>
+
+			<!-- This is the drop down selection box for garlic -->
+			<label for="garlicSelect" style="color: lightgray; height: 30px; font-size: 16px;">&nbsp;Garlic:</label>
+			<select id="garlicSelect" class="form-control" style="height: 30px; font-size: 16px; width: auto">
+			<option>Yes</option>
+			<option>No</option>
+			</select>
+
+			<!-- This is the submit button to add the data to the csv file -->
+			<button type="button" class="btn btn-primary" style="height: 30px; font-size: 16px;" onclick="saveNewPerson()">Submit</button>
+		</form>
+
+		<label for="table" style="margin-top: 20px; margin-left: 20%; margin-right: 20%; background-color: 424949; padding: 15px; text-align: left; color: lightgray;">The table will be shown below when the file is selected.</label>
+		<table id="table" style="margin-top: 20px; margin-left: auto; margin-right: auto; background-color: 424949; padding: 15px; text-align: center; width: 60%; color: lightgray; border: 1px solid; border-color: lightgray; border-collapse: collapse;"></table>
+
+
+		<script>
+			function resetForm(){
+				// This function is pretty obvious, just resets to form values to their defaults after being called
+				document.getElementById('form').reset();
+			}
+			function saveNewPerson(){
+				// This function gets the csv file containing the people from the user and then reads it
+
+				// This section is where the request for the file is made
+				const fileInput = document.createElement('input');
+				fileInput.type = 'file';
+				fileInput.style.display = 'none';
+				fileInput.onchange = () => { // This runs when the user has submitted the file
+					const file = fileInput.files[0];
+					const reader = new FileReader();
+					reader.onload = () => { // This runs when the file has been loaded in the program
+						var before = reader.result; // reader.result is where the text from the file is stored
+						var addition = getFormData(); // This is a call to another function defined below
+						var newText = before + addition; // Appending the user submittied data to the csv text
+						drawTable(newText); // This calls the function to draw the table defined below with the old and new user submitted data
+						saveData(newText); // This calls the fuction to save the csv with the old and new user submitted data
+					};
+					reader.readAsText(file);
+				};
+				document.body.appendChild(fileInput); // This is just a fake click to force the select file pop up
+				const fakeClick = () => {
+  					fileInput.click();
+				};
+				fakeClick();
+			}
+			function getFormData(){
+				// This function takes the user input from the form and puts it into a new line as csv format and then returns it
+				var text = document.getElementById('inputName').value + "," + document.getElementById('shadowSelect').value 
+				+ "," + document.getElementById('comlexSelect').value + "," + document.getElementById('garlicSelect').value + ",\r\n";
+
+	            resetForm();
+	            return text;
+			}
+			function saveData(arg){
+				// This function takes the given data and writes it to a csv file
+				dataString = arg.toString();
+
+				const blob = new Blob([dataString], {type: 'text/csv;charset=utf-8,' })
+				const objUrl = URL.createObjectURL(blob)
+				const link = document.createElement('a')
+				link.setAttribute('href', objUrl)
+				link.setAttribute('download', 'peopleList.csv')
+				document.body.appendChild(link);
+				link.click();
+
+			}
+			function drawTable(arg){
+				// This function takes the given data and draws it as a table on the page
+				// It takes a string in csv format and seperates it into an array with each row of data being a sub array
+				dataString = arg.toString();
+
+				// This code is used to seperate the data string into an array with each row of data being and array
+				var temp = dataString.replaceAll("\r\n", ",");
+				dataList = temp.split(",");
+
+				var loops = (dataList.length-1) / 5;
+				var finalList = [];
+				for (let i = 0; i < loops; i++){
+					var pos = (i+1) * 5;
+					finalList.push(dataList.slice(pos-5, pos));
+				}
+				console.log(finalList);
+
+				// This is the code that creates the table
+				var tableFormat = "";
+				finalList.forEach(function(row) {
+        			tableFormat += "<tr>";
+       				row.forEach(function(cell) {
+            			tableFormat += "<td>" + cell + "</td>" ;
+        			});
+        			tableFormat += "</tr>";
+    			});
+
+    			// This changes the table element that already exists above to display the data
+    			document.getElementById("table").innerHTML = tableFormat;
+			}
+		</script>
+
+		
+	</body>
+</html>

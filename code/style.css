@@ -1,0 +1,26 @@
+body{
+    background-color: rgba(121, 139, 147, 0.695);
+}
+
+
+
+#hidden_div{
+    display: none;
+}
+
+#chart_div{
+    align-content: center;
+    display: inline-block;
+}
+#tablestyle{
+    background-color: rgb(165, 175, 171);
+}
+
+.heading{
+    background-color: rgb(75, 77, 80);
+    color: rgb(0, 0, 0);
+}
+
+#student_form{
+    display: none;
+}
